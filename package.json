@@ -1,0 +1,12 @@
+{
+  "name": "react-todolist",
+  "version": "1.0.0",
+  "description": "react-todolist",
+  "main": "index.js",
+  "repository": "https://github.com/mackerel0818/react-todolist.git",
+  "author": "makerel0818 <minji2700@naver.com>",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^18.2.0"
+  }
+}
