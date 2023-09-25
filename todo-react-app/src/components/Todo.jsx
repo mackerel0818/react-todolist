@@ -1,19 +1,27 @@
 import React from "react";
+import { ListItem, ListItemText, InputBase, Checkbox } from "@material-ui/core";
 
-export default function Todo({ items }) {
+export default function Todo({ item }) {
+  const handleClick = () => {
+    item.done = "";
+  };
+
   return (
     <div>
-      {items.map((item) => (
-        <div>
-          <input
-            type="checkbox"
+      <ListItem>
+        <Checkbox onClick={handleClick} checked={item.done} />
+        <ListItemText>
+          <InputBase
+            inputProps={{ "aria-label": "naked" }}
+            type="text"
             id={item.id}
             name={item.id}
-            checked={item.done}
+            value={item.title}
+            multiline={true}
+            fullWidth={true}
           />
-          <label for={item.id}>{item.title}</label>
-        </div>
-      ))}
+        </ListItemText>
+      </ListItem>
     </div>
   );
 }
