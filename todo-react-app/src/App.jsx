@@ -9,11 +9,16 @@ import { Paper, List, Container } from "@material-ui/core";
 import AddTodo from "./components/AddTodo";
 import Todo from "./components/Todo";
 import { call } from "./service/ApiService";
+import Loading from "./components/ui/Loading";
 
 const queryClient = new QueryClient();
 
 function App() {
-  const { data: items } = useQuery("/todo", async () => {
+  const {
+    isLoading,
+    error,
+    data: items,
+  } = useQuery("/todo", async () => {
     const response = await call("/todo", "GET", null);
     return response.data;
   });
@@ -74,6 +79,8 @@ function App() {
     <div className="App">
       <Container maxWidth="md">
         <AddTodo add={handleAdd} items={items || []} />
+        {isLoading && <Loading />}
+        {error && <p>{error}</p>}
         <div className="TodoList">{todoItems}</div>
       </Container>
     </div>
