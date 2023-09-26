@@ -9,14 +9,15 @@ import {
 } from "@material-ui/core";
 import DeleteOutlined from "@material-ui/icons/DeleteOutlined";
 
-export default function Todo({ item, remove }) {
+export default function Todo({ item, remove, update }) {
   const [title, setTitle] = useState(item.title);
-  const [ischecked, setIsChecked] = useState(false);
+  const [ischecked, setIsChecked] = useState(item.done);
   const [readOnlyMode, setReadOnlyMode] = useState(true);
 
   const handleChange = () => {
     setIsChecked(!ischecked);
     item.done = !item.done;
+    update(item);
   };
 
   const offReadOnlyMode = () => {
@@ -31,10 +32,17 @@ export default function Todo({ item, remove }) {
     if (e.key === "Enter") {
       setReadOnlyMode(!readOnlyMode);
       item.title = title;
+      console.log(item);
+      update(item);
     }
   };
 
-  const handleDelete = () => remove(item);
+  const handleDelete = () => {
+    const deletedItem = {
+      id: item.id,
+    };
+    remove(deletedItem);
+  };
 
   return (
     <div>
