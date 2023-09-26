@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { ListItem, ListItemText, InputBase, Checkbox } from "@material-ui/core";
 
 export default function Todo({ item }) {
-  const handleClick = () => {
-    item.done = "";
+  const [ischecked, setIsChecked] = useState(false);
+
+  const handleChange = () => {
+    setIsChecked(!ischecked);
+    item.done = !item.done;
+    console.log(item);
   };
 
   return (
     <div>
       <ListItem>
-        <Checkbox onClick={handleClick} checked={item.done} />
+        <Checkbox onChange={handleChange} checked={item.done} />
         <ListItemText>
           <InputBase
             inputProps={{ "aria-label": "naked" }}
