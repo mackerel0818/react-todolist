@@ -30,10 +30,9 @@ export default function Todo({ item, remove, update }) {
 
   const handleEnter = (e) => {
     if (e.key === "Enter") {
-      setReadOnlyMode(!readOnlyMode);
       item.title = title;
-      console.log(item);
       update(item);
+      setReadOnlyMode(!readOnlyMode);
     }
   };
 
@@ -47,14 +46,14 @@ export default function Todo({ item, remove, update }) {
   return (
     <div>
       <ListItem>
-        <Checkbox onChange={handleChange} checked={item.done} />
+        <Checkbox onChange={handleChange} checked={ischecked} />
         <ListItemText>
           <InputBase
             inputProps={{ "aria-label": "naked", readOnly: readOnlyMode }}
             type="text"
             id={item.id}
             name={item.id}
-            value={readOnlyMode ? item.title : title}
+            value={title}
             multiline={true}
             fullWidth={true}
             onClick={offReadOnlyMode}
