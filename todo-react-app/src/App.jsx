@@ -1,39 +1,61 @@
-import React, { useEffect, useState } from "react";
-import Todo from "./components/Todo";
+import React from "react";
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+  useMutation,
+} from "react-query";
 import { Paper, List, Container } from "@material-ui/core";
 import AddTodo from "./components/AddTodo";
+import Todo from "./components/Todo";
 import { call } from "./service/ApiService";
 
-export default function App() {
-  const [items, setItems] = useState([]);
+const queryClient = new QueryClient();
 
-  useEffect(() => {
-    call("/todo", "GET", null).then((response) => {
-      setItems(response.data);
-    });
-  }, [items]);
+function App() {
+  const { data: items } = useQuery("/todo", async () => {
+    const response = await call("/todo", "GET", null);
+    return response.data;
+  });
+
+  const mutation = useMutation((newItem) => call("/todo", "POST", newItem), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("/todo");
+    },
+  });
 
   const handleAdd = (newItem) => {
     newItem.done = false;
-    call("/todo", "POST", newItem).then((response) => {
-      const item = response.data;
-      setItems((prevItems) => [...prevItems, item]);
-    });
+    mutation.mutate(newItem);
   };
+
+  const updateMutation = useMutation(
+    (updatedItem) => call("/todo", "PUT", updatedItem),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("/todo");
+      },
+    }
+  );
 
   const handleUpdate = (updatedItem) => {
-    call("/todo", "PUT", updatedItem).then((response) => {
-      setItems(response.data);
-    });
+    updateMutation.mutate(updatedItem);
   };
+
+  const deleteMutation = useMutation(
+    (deletedItem) => call("/todo", "DELETE", deletedItem),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("/todo");
+      },
+    }
+  );
 
   const handleDelete = (deletedItem) => {
-    call("/todo", "DELETE", deletedItem).then((response) => {
-      setItems(response.data);
-    });
+    deleteMutation.mutate(deletedItem);
   };
 
-  const todoItems = items.length > 0 && (
+  const todoItems = items && (
     <Paper style={{ margin: 16 }}>
       <List>
         {items.map((item) => (
@@ -51,9 +73,17 @@ export default function App() {
   return (
     <div className="App">
       <Container maxWidth="md">
-        <AddTodo add={handleAdd} items={items} />
+        <AddTodo add={handleAdd} items={items || []} />
         <div className="TodoList">{todoItems}</div>
       </Container>
     </div>
+  );
+}
+
+export default function WrappedApp() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <App />
+    </QueryClientProvider>
   );
 }

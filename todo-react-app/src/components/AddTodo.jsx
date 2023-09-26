@@ -22,7 +22,7 @@ export default function AddTodo({ add }) {
       <Grid container>
         <Grid xs={11} md={11} item style={{ paddingRight: 16 }}>
           <TextField
-            placehoder="Add Todo here"
+            placeholder="Add Todo here"
             fullWidth
             onChange={onInputChange}
             value={item.title}
