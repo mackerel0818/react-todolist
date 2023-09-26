@@ -18,23 +18,25 @@ export default function App() {
     },
   ]);
 
+  const handleAdd = (newItem) => {
+    newItem.id = uuid();
+    newItem.done = false;
+    const updatedItems = [...items, newItem];
+    setItems(updatedItems);
+  };
+
+  const handleDelete = (deletedItem) =>
+    setItems(items.filter((item) => item.id !== deletedItem.id));
+
   const todoItems = items.length > 0 && (
     <Paper style={{ margin: 16 }}>
       <List>
         {items.map((item) => (
-          <Todo item={item} key={item.id} />
+          <Todo item={item} key={item.id} remove={handleDelete} />
         ))}{" "}
       </List>
     </Paper>
   );
-
-  const handleAdd = (item) => {
-    item.id = uuid();
-    item.done = false;
-    const updatedItems = [...items, item];
-    setItems(updatedItems);
-    console.log("items:", updatedItems);
-  };
 
   return (
     <div className="App">
