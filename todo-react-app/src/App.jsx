@@ -5,13 +5,11 @@ import {
   useQuery,
   useMutation,
 } from "react-query";
-import { Paper, List, Container } from "@material-ui/core";
-import AddTodo from "./components/AddTodo";
+import { Paper, List } from "@material-ui/core";
 import Todo from "./components/Todo";
 import { call, signout } from "./service/ApiService";
 import Loading from "./components/ui/Loading";
-import FilterButtons from "./components/FilterButtons";
-import NavigationBar from "./components/NavigationBar";
+import TodoListPage from "./pages/TodoListPage";
 const queryClient = new QueryClient();
 
 function App() {
@@ -88,28 +86,20 @@ function App() {
     </Paper>
   );
 
-  const todoListPage = (
-    <div>
-      <NavigationBar signout={signout} />
-      <Container maxWidth="md">
-        <AddTodo add={handleAdd} />
-        <div className="TodoList">{todoItems}</div>
-        <FilterButtons filter={filter} handleFilter={handleFilter} />
-      </Container>
-    </div>
-  );
-
-  const loadingPage = <Loading />;
-  let content = loadingPage;
-
-  if (!isLoading) {
-    content = todoListPage;
-  }
-
   return (
     <div className="App">
       {error && <p>{error}</p>}
-      {content}
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <TodoListPage
+          signout={signout}
+          handleAdd={handleAdd}
+          todoItems={todoItems}
+          filter={filter}
+          handleFilter={handleFilter}
+        />
+      )}
     </div>
   );
 }
