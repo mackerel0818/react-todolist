@@ -1,28 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   QueryClient,
   QueryClientProvider,
   useQuery,
   useMutation,
 } from "react-query";
-import {
-  Paper,
-  List,
-  Container,
-  AppBar,
-  Toolbar,
-  Grid,
-  Typography,
-  Button,
-} from "@material-ui/core";
+import { Paper, List, Container } from "@material-ui/core";
 import AddTodo from "./components/AddTodo";
 import Todo from "./components/Todo";
 import { call, signout } from "./service/ApiService";
 import Loading from "./components/ui/Loading";
-
+import FilterButtons from "./components/FilterButtons";
+import NavigationBar from "./components/NavigationBar";
 const queryClient = new QueryClient();
 
 function App() {
+  const [filter, setFilter] = useState("all");
   const {
     isLoading,
     error,
@@ -69,10 +62,21 @@ function App() {
     deleteMutation.mutate(deletedItem);
   };
 
-  const todoItems = items && (
+  let filteredItems = items;
+  if (filter === "complete") {
+    filteredItems = items.filter((item) => item.done);
+  } else if (filter === "active") {
+    filteredItems = items.filter((item) => !item.done);
+  }
+
+  const handleFilter = (filterType) => {
+    setFilter(filterType);
+  };
+
+  const todoItems = filteredItems && (
     <Paper style={{ margin: 16 }}>
       <List>
-        {items.map((item) => (
+        {filteredItems.map((item) => (
           <Todo
             item={item}
             key={item.id}
@@ -84,29 +88,13 @@ function App() {
     </Paper>
   );
 
-  const navigationBar = (
-    <AppBar position="static" style={{ backgroundColor: "#F50057" }}>
-      <Toolbar>
-        <Grid justify="space-between" container>
-          <Grid item>
-            <Typography variant="h6">오늘의 할일</Typography>
-          </Grid>
-          <Grid item>
-            <Button color="inherit" onClick={signout}>
-              logout
-            </Button>
-          </Grid>
-        </Grid>
-      </Toolbar>
-    </AppBar>
-  );
-
   const todoListPage = (
     <div>
-      {navigationBar}
+      <NavigationBar signout={signout} />
       <Container maxWidth="md">
         <AddTodo add={handleAdd} />
         <div className="TodoList">{todoItems}</div>
+        <FilterButtons filter={filter} handleFilter={handleFilter} />
       </Container>
     </div>
   );
