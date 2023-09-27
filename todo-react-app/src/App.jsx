@@ -5,10 +5,19 @@ import {
   useQuery,
   useMutation,
 } from "react-query";
-import { Paper, List, Container } from "@material-ui/core";
+import {
+  Paper,
+  List,
+  Container,
+  AppBar,
+  Toolbar,
+  Grid,
+  Typography,
+  Button,
+} from "@material-ui/core";
 import AddTodo from "./components/AddTodo";
 import Todo from "./components/Todo";
-import { call } from "./service/ApiService";
+import { call, signout } from "./service/ApiService";
 import Loading from "./components/ui/Loading";
 
 const queryClient = new QueryClient();
@@ -75,14 +84,44 @@ function App() {
     </Paper>
   );
 
-  return (
-    <div className="App">
+  const navigationBar = (
+    <AppBar position="static">
+      <Toolbar>
+        <Grid justify="space-between" container>
+          <Grid item>
+            <Typography variant="h6">오늘의 할일</Typography>
+          </Grid>
+          <Grid item>
+            <Button color="inherit" onClick={signout}>
+              logout
+            </Button>
+          </Grid>
+        </Grid>
+      </Toolbar>
+    </AppBar>
+  );
+
+  const todoListPage = (
+    <div>
+      {navigationBar}
       <Container maxWidth="md">
-        <AddTodo add={handleAdd} items={items || []} />
-        {isLoading && <Loading />}
-        {error && <p>{error}</p>}
+        <AddTodo add={handleAdd} />
         <div className="TodoList">{todoItems}</div>
       </Container>
+    </div>
+  );
+
+  const loadingPage = <Loading />;
+  let content = loadingPage;
+
+  if (!isLoading) {
+    content = todoListPage;
+  }
+
+  return (
+    <div className="App">
+      {error && <p>{error}</p>}
+      {content}
     </div>
   );
 }
