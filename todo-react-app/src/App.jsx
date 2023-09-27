@@ -85,7 +85,7 @@ function App() {
   );
 
   const navigationBar = (
-    <AppBar position="static">
+    <AppBar position="static" style={{ backgroundColor: "#F50057" }}>
       <Toolbar>
         <Grid justify="space-between" container>
           <Grid item>
