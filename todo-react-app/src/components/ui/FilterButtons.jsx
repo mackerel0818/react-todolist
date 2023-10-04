@@ -1,7 +1,13 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
+import { useTheme } from "../../context/ThemeContext";
 
 export default function FilterButtons({ filter, handleFilter }) {
+  const { darkMode } = useTheme();
+
+  const buttonColor = darkMode ? "var(--dark-color)" : "var(--primary-color)";
+  const buttonTextColor = "white";
+
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <Button
@@ -9,8 +15,8 @@ export default function FilterButtons({ filter, handleFilter }) {
         color="primary"
         onClick={() => handleFilter("all")}
         style={{
-          backgroundColor: filter === "all" ? "#F50057" : "transparent",
-          color: filter === "all" ? "white" : "inherit",
+          backgroundColor: filter === "all" ? buttonColor : "transparent",
+          color: filter === "all" ? buttonTextColor : "inherit",
           marginRight: "8px",
         }}
       >
@@ -21,8 +27,8 @@ export default function FilterButtons({ filter, handleFilter }) {
         color="primary"
         onClick={() => handleFilter("complete")}
         style={{
-          backgroundColor: filter === "complete" ? "#F50057" : "transparent",
-          color: filter === "complete" ? "white" : "inherit",
+          backgroundColor: filter === "complete" ? buttonColor : "transparent",
+          color: filter === "complete" ? buttonTextColor : "inherit",
           marginRight: "8px",
         }}
       >
@@ -33,8 +39,8 @@ export default function FilterButtons({ filter, handleFilter }) {
         color="primary"
         onClick={() => handleFilter("active")}
         style={{
-          backgroundColor: filter === "active" ? "#F50057" : "transparent",
-          color: filter === "active" ? "white" : "inherit",
+          backgroundColor: filter === "active" ? buttonColor : "transparent",
+          color: filter === "active" ? buttonTextColor : "inherit",
         }}
       >
         Active

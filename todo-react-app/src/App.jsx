@@ -10,10 +10,12 @@ import Todo from "./components/Todo";
 import { call, signout } from "./service/ApiService";
 import Loading from "./components/ui/Loading";
 import TodoListPage from "./pages/TodoListPage";
+import { ThemeProvider } from "./context/ThemeContext";
 const queryClient = new QueryClient();
 
 function App() {
   const [filter, setFilter] = useState("all");
+
   const {
     isLoading,
     error,
@@ -60,6 +62,17 @@ function App() {
     deleteMutation.mutate(deletedItem);
   };
 
+  const handleBatchDelete = async () => {
+    const doneItems = items.filter((item) => item.done);
+
+    const deletePromises = doneItems.map((item) => {
+      return deleteMutation.mutateAsync(item);
+    });
+
+    await Promise.all(deletePromises);
+    queryClient.invalidateQueries("/todo");
+  };
+
   let filteredItems = items;
   if (filter === "complete") {
     filteredItems = items.filter((item) => item.done);
@@ -98,6 +111,7 @@ function App() {
           todoItems={todoItems}
           filter={filter}
           handleFilter={handleFilter}
+          handleBatchDelete={handleBatchDelete}
         />
       )}
     </div>
@@ -106,8 +120,10 @@ function App() {
 
 export default function WrappedApp() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <App />
-    </QueryClientProvider>
+    <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 }

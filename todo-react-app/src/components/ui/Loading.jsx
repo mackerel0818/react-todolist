@@ -1,4 +1,5 @@
 import React from "react";
+import "../../index.css";
 
 export default function Loading() {
   return (
@@ -27,14 +28,5 @@ const styles = {
     height: "50px",
     animation: "spin 1s linear infinite",
     margin: "0 auto",
-  },
-  // 스피너 애니메이션 키프레임
-  "@keyframes spin": {
-    "0%": {
-      transform: "rotate(0deg)",
-    },
-    "100%": {
-      transform: "rotate(360deg)",
-    },
   },
 };

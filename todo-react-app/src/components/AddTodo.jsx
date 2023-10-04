@@ -1,8 +1,10 @@
 import { Button, Grid, Paper, TextField } from "@material-ui/core";
 import React, { useState } from "react";
+import { useTheme } from "../context/ThemeContext";
 
 export default function AddTodo({ add }) {
   const [item, setItem] = useState({ title: "" });
+  const { darkMode } = useTheme();
 
   const onButtonClick = () => {
     if (item.title.trim() !== "") {
@@ -27,12 +29,13 @@ export default function AddTodo({ add }) {
             onChange={onInputChange}
             value={item.title}
             onKeyPress={enterKeyEventHandler}
+            color={darkMode ? "var(--dark-color)" : "secondary"}
           />
         </Grid>
         <Grid xs={1} md={1} item>
           <Button
             fullWidth
-            color="secondary"
+            color={darkMode ? "var(--dark-color)" : "secondary"}
             variant="outlined"
             onClick={onButtonClick}
           >

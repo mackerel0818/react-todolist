@@ -8,11 +8,17 @@ import {
   IconButton,
 } from "@material-ui/core";
 import DeleteOutlined from "@material-ui/icons/DeleteOutlined";
+import { useTheme } from "../context/ThemeContext";
 
 export default function Todo({ item, remove, update }) {
   const [title, setTitle] = useState(item.title);
   const [ischecked, setIsChecked] = useState(item.done);
   const [readOnlyMode, setReadOnlyMode] = useState(true);
+  const { darkMode } = useTheme();
+  const itemStyle = {
+    textDecoration: item.done ? "line-through" : "none",
+    color: item.done ? "#8d8d8d" : "inherit",
+  };
 
   const handleChange = () => {
     setIsChecked(!ischecked);
@@ -46,9 +52,14 @@ export default function Todo({ item, remove, update }) {
   return (
     <div>
       <ListItem>
-        <Checkbox onChange={handleChange} checked={ischecked} />
+        <Checkbox
+          color={darkMode ? "var(--dark-color)" : "secondary"}
+          onChange={handleChange}
+          checked={ischecked}
+        />
         <ListItemText>
           <InputBase
+            style={itemStyle}
             inputProps={{ "aria-label": "naked", readOnly: readOnlyMode }}
             type="text"
             id={item.id}

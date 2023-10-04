@@ -43,6 +43,7 @@ export default function SignUp() {
               id="username"
               label="사용자 이름"
               autoFocus
+              color="secondary"
             />
           </Grid>
 
@@ -56,6 +57,7 @@ export default function SignUp() {
               id="email"
               label="이메일 주소"
               autoFocus
+              color="secondary"
             />
           </Grid>
 
@@ -69,18 +71,24 @@ export default function SignUp() {
               id="password"
               label="패스워드"
               autoFocus
+              color="secondary"
             />
           </Grid>
 
           <Grid item xs={12}>
-            <Button type="submit" fullWidth variant="contained" color="primary">
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="secondary"
+            >
               계정생성
             </Button>
           </Grid>
         </Grid>
         <Grid container justify="flex-end">
           <Grid item>
-            <Link href="/login" variant="body2">
+            <Link href="/login" variant="body2" color="secondary">
               이미 계정이 있습니까? 로그인 하세요.
             </Link>
           </Grid>

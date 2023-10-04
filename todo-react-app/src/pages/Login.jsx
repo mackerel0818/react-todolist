@@ -37,6 +37,7 @@ export default function Login() {
               label="이메일 주소"
               name="email"
               autoComplete="email"
+              color="secondary"
             />
           </Grid>
 
@@ -49,11 +50,17 @@ export default function Login() {
               label="패스워드"
               name="password"
               autoComplete="password"
+              color="secondary"
             />
           </Grid>
 
           <Grid item xs={12}>
-            <Button type="submit" fullWidth variant="contained" color="primary">
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="secondary"
+            >
               로그인
             </Button>
           </Grid>
